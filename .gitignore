@@ -1,3 +1,4 @@
 *.lock
 
-Web/iTalker/.idea/
+iTalker/.idea/
+iTalker/.build/
