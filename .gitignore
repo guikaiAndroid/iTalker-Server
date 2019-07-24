@@ -1,4 +1,3 @@
-*.lock
-
-iTalker/.idea/
-iTalker/.build/
+out
+.idea
+build
