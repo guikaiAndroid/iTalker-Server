@@ -1,6 +1,8 @@
 package net.qiujuer.web.italker.push.bean.UserCard;
 
 import com.google.gson.annotations.Expose;
+import net.qiujuer.web.italker.push.bean.db.User;
+import net.qiujuer.web.italker.push.utils.Hib;
 
 import java.time.LocalDateTime;
 
@@ -37,6 +39,35 @@ public class UserCard {
     // 用户信息最后的更新时间
     @Expose
     private LocalDateTime modifyAt;
+
+    public UserCard(final User user) {
+        this(user, false);
+    }
+
+    public UserCard(final User user, boolean isFollow) {
+        this.isFollow = isFollow;
+
+        this.id = user.getId();
+        this.name = user.getName();
+        this.phone = user.getPhone();
+        this.portrait = user.getPortrait();
+        this.desc = user.getDescription();
+        this.sex = user.getSex();
+        this.modifyAt = user.getUpdateAt();
+
+        // user.getFollowers().size()
+        // 懒加载会报错，因为没有Session
+        Hib.queryOnly(session -> {
+            // 重新加载一次用户信息
+            session.load(user, user.getId());
+            // 这个时候仅仅只是进行了数量查询，并没有查询整个集合
+            // 要查询集合，必须在session存在情况下进行遍历
+            // 或者使用Hibernate.initialize(user.getFollowers());
+            follows = user.getFollowers().size();
+            following = user.getFollowing().size();
+        });
+
+    }
 
     public String getId() {
         return id;

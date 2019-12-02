@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
  * Crete by Anding on 2019-11-30
  */
 
+@Entity
 @Table(name = "TB_USER_FOLLOW")
 public class UserFollow {
 

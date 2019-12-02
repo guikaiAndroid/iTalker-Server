@@ -4,6 +4,7 @@ import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.Set;
  */
 
 // 在数据库中创建一张TB_USER表
+@Entity
 @Table(name = "TB_USER")
 public class User implements Principal {
 

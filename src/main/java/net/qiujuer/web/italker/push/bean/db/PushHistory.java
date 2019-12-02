@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
  * Crete by Anding on 2019-12-01
  */
 
+@Entity
 @Table(name = "TB_PUSH_HISTORY")
 public class PushHistory {
 
