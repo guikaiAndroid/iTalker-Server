@@ -3,6 +3,9 @@ package net.qiujuer.web.italker.push.factory;
 import net.qiujuer.web.italker.push.bean.db.User;
 import net.qiujuer.web.italker.push.utils.Hib;
 import net.qiujuer.web.italker.push.utils.TextUtil;
+import org.hibernate.Session;
+
+import java.util.UUID;
 
 /**
  * Description: 用户操作逻辑实现
@@ -14,7 +17,7 @@ public class UserFactory {
     public static User findByPhone(String phone) {
         return Hib.query(session -> (User) session
                 .createQuery("from User where phone=:inPhone")
-                .setParameter("inPhone",phone)
+                .setParameter("inPhone", phone)
                 .uniqueResult());
     }
 
@@ -22,8 +25,49 @@ public class UserFactory {
     public static User findByName(String name) {
         return Hib.query(session -> (User) session
                 .createQuery("from User where name=:name")
-                .setParameter("name",name)
+                .setParameter("name", name)
                 .uniqueResult());
+    }
+
+    /**
+     * 更新用户信息到数据库
+     *
+     * @param user User
+     * @return User
+     */
+    public static User update(User user) {
+        return Hib.query(session -> {
+            session.saveOrUpdate(user);
+            return user;
+        });
+    }
+
+    /**
+     * 用户登录
+     * 注册的操作需要写入数据库，并返回数据库中的User信息
+     *
+     * @param account  账户
+     * @param password 密码
+     * @return User
+     */
+    public static User login(String account, String password) {
+        final String accountStr = account.trim();
+        //把原文进行同样的处理
+        final String encodePassword = encodePassword(password);
+
+        // 寻找
+        User user = Hib.query(session -> (User) session
+                .createQuery("from User where phone =:phone and password=:password")
+                .setParameter("phone", accountStr)
+                .setParameter("password", encodePassword)
+                .uniqueResult());
+
+        if (user != null) {
+            // 对User进行登录操作，更新Token
+            user = login(user);
+        }
+
+        return user;
     }
 
     /**
@@ -68,6 +112,16 @@ public class UserFactory {
             session.save(user);
             return user;
         });
+    }
+
+    private static User login(User user) {
+        // 使用一个随机的UUID值充当Token
+        String newToken = UUID.randomUUID().toString();
+        //进行一次Base64格式化
+        newToken = TextUtil.encodeBase64(newToken);
+        user.setToken(newToken);
+
+        return update(user);
     }
 
     /**

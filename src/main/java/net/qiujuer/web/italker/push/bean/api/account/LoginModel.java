@@ -4,15 +4,12 @@ import com.google.common.base.Strings;
 import com.google.gson.annotations.Expose;
 
 /**
- * Description: 接收从客户端传来的注册信息
- * Crete by Anding on 2019-12-01
+ * Description: 客户端传过来的信息
+ * Crete by Anding on 2019-12-03
  */
-public class RegisterModel {
-
+public class LoginModel {
     @Expose
     private String account;
-    @Expose
-    private String name;
     @Expose
     private String password;
     @Expose
@@ -24,14 +21,6 @@ public class RegisterModel {
 
     public void setAccount(String account) {
         this.account = account;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
@@ -51,10 +40,9 @@ public class RegisterModel {
     }
 
     // 校验
-    public static boolean check(RegisterModel model) {
+    public static boolean check(LoginModel model) {
         return model != null
                 && !Strings.isNullOrEmpty(model.account)
-                && !Strings.isNullOrEmpty(model.password)
-                && !Strings.isNullOrEmpty(model.name);
+                && !Strings.isNullOrEmpty(model.password);
     }
 }
