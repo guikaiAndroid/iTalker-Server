@@ -1,4 +1,4 @@
-package net.qiujuer.web.italker.push.bean.UserCard;
+package net.qiujuer.web.italker.push.bean.card;
 
 import com.google.gson.annotations.Expose;
 import net.qiujuer.web.italker.push.bean.db.User;
