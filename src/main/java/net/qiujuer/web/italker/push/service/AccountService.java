@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
  */
 
 @Path("/account")
-public class AccountService {
+public class AccountService extends BaseService {
 
     // 登录接口
     @POST
@@ -114,10 +114,10 @@ public class AccountService {
             return ResponseModel.buildParameterError();
 
         // 拿到自己的个人信息
-        User user = UserFactory.findByToken(token);
+//        User user = UserFactory.findByToken(token);
+        User user = getSelf();
         return bind(user, pushId);
     }
-
 
     /**
      * 绑定的操作

@@ -1,5 +1,6 @@
 package net.qiujuer.web.italker.push;
 
+import net.qiujuer.web.italker.push.provider.AuthRequestFilter;
 import net.qiujuer.web.italker.push.provider.GsonProvider;
 import net.qiujuer.web.italker.push.service.AccountService;
 import net.qiujuer.web.italker.push.utils.Hib;
@@ -16,6 +17,9 @@ public class Application extends ResourceConfig {
 
         //注册逻辑处理的包名
         packages(AccountService.class.getPackage().getName());
+
+        // 注册我们的全局请求拦截器
+        register(AuthRequestFilter.class);
 
         //注册Json解析器
         //register(JacksonJsonProvider.class);
