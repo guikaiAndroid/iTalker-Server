@@ -1,4 +1,6 @@
+.gradle
 out
 .idea
 build
-.gradle
+gradle
+src/main/main.iml
