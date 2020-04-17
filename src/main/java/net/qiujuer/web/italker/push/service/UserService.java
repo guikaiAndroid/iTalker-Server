@@ -1,11 +1,13 @@
 package net.qiujuer.web.italker.push.service;
 
 import com.google.common.base.Strings;
+import net.qiujuer.web.italker.push.bean.api.base.PushModel;
 import net.qiujuer.web.italker.push.bean.api.base.ResponseModel;
 import net.qiujuer.web.italker.push.bean.api.user.UpdateInfoModel;
 import net.qiujuer.web.italker.push.bean.card.UserCard;
 import net.qiujuer.web.italker.push.bean.db.User;
 import net.qiujuer.web.italker.push.factory.UserFactory;
+import net.qiujuer.web.italker.push.utils.PushDispatcher;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -48,6 +50,12 @@ public class UserService extends BaseService {
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseModel<List<UserCard>> contact() {
         User self = getSelf();
+
+        PushModel pushModel = new PushModel();
+        pushModel.add(new PushModel.Entity(0,"hello world!"));
+        PushDispatcher dispatcher = new PushDispatcher();
+        dispatcher.add(self,pushModel);
+        dispatcher.submit();
 
         // 拿到我的联系人
         // 拿到我的联系人
