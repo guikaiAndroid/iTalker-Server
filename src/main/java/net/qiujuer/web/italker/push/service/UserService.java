@@ -51,11 +51,11 @@ public class UserService extends BaseService {
     public ResponseModel<List<UserCard>> contact() {
         User self = getSelf();
 
-        PushModel pushModel = new PushModel();
-        pushModel.add(new PushModel.Entity(0,"hello world!"));
-        PushDispatcher dispatcher = new PushDispatcher();
-        dispatcher.add(self,pushModel);
-        dispatcher.submit();
+//        PushModel pushModel = new PushModel();
+//        pushModel.add(new PushModel.Entity(0,"hello world!"));
+//        PushDispatcher dispatcher = new PushDispatcher();
+//        dispatcher.add(self,pushModel);
+//        dispatcher.submit();
 
         // 拿到我的联系人
         // 拿到我的联系人
