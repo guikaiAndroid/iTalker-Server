@@ -2,6 +2,7 @@ package net.qiujuer.web.italker.push.factory;
 
 import com.google.common.base.Strings;
 import net.qiujuer.web.italker.push.bean.api.base.PushModel;
+import net.qiujuer.web.italker.push.bean.card.GroupMemberCard;
 import net.qiujuer.web.italker.push.bean.card.MessageCard;
 import net.qiujuer.web.italker.push.bean.db.*;
 import net.qiujuer.web.italker.push.utils.Hib;
@@ -131,4 +132,56 @@ public class PushFactory {
             dispatcher.add(receiver, pushModel);
         }
     }
+
+    /**
+     * 通知一些成员，被加入了XXX群
+     *
+     * @param members 被加入群的成员
+     */
+    public static void pushJoinGroup(Set<GroupMember> members) {
+
+        // 发送者
+        PushDispatcher dispatcher = new PushDispatcher();
+
+        // 一个历史记录列表
+        List<PushHistory> histories = new ArrayList<>();
+
+        for (GroupMember member : members) {
+            User receiver = member.getUser();
+            if (receiver == null)
+                return;
+
+            // 每个成员的信息卡片
+            GroupMemberCard memberCard = new GroupMemberCard(member);
+            String entity = TextUtil.toJson(memberCard);
+
+            // 历史记录表字段建立
+            PushHistory history = new PushHistory();
+            // 你被添加到群的类型
+            history.setEntityType(PushModel.ENTITY_TYPE_ADD_GROUP);
+            history.setEntity(entity);
+            history.setReceiver(receiver);
+            history.setReceiverPushId(receiver.getPushId());
+            histories.add(history);
+
+            // 构建一个消息Model
+            PushModel pushModel = new PushModel()
+                    .add(history.getEntityType(), history.getEntity());
+
+            // 添加到发送者的数据集中
+            dispatcher.add(receiver, pushModel);
+            histories.add(history);
+        }
+
+        // 保存到数据库的操作
+        Hib.queryOnly(session -> {
+            for (PushHistory history : histories) {
+                session.saveOrUpdate(history);
+            }
+        });
+
+        // 提交发送
+        dispatcher.submit();
+    }
+
 }
