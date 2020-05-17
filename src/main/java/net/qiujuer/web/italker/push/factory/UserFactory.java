@@ -93,7 +93,7 @@ public class UserFactory {
             // 给之前的设备推送一条退出用户的消息
             if (!Strings.isNullOrEmpty(user.getPushId())) {
                 //推送一个退出消息
-
+                PushFactory.pushLogout(user, user.getPushId());
             }
 
             //更新新的设备Id
