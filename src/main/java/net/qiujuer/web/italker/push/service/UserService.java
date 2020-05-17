@@ -6,6 +6,7 @@ import net.qiujuer.web.italker.push.bean.api.base.ResponseModel;
 import net.qiujuer.web.italker.push.bean.api.user.UpdateInfoModel;
 import net.qiujuer.web.italker.push.bean.card.UserCard;
 import net.qiujuer.web.italker.push.bean.db.User;
+import net.qiujuer.web.italker.push.factory.PushFactory;
 import net.qiujuer.web.italker.push.factory.UserFactory;
 import net.qiujuer.web.italker.push.utils.PushDispatcher;
 
@@ -98,9 +99,9 @@ public class UserService extends BaseService {
             return ResponseModel.buildNotFoundUserError(null);
         }
 
-        // TODO 通知我关注的人我关注他
+        // 通知我关注的人我关注他
         // 给他发送一个我的信息过去
-
+        PushFactory.pushFollow(followUser, new UserCard(self));
 
         // 返回关注的人的信息
         return ResponseModel.buildOk(new UserCard(followUser, true));
@@ -133,6 +134,8 @@ public class UserService extends BaseService {
         boolean isFollow = UserFactory.getUserFollow(self, user) != null;
         return ResponseModel.buildOk(new UserCard(user, isFollow));
     }
+
+
 
     // 搜索人的接口实现
     // 为了简化分页：只返回20条数据
