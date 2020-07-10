@@ -83,6 +83,8 @@ public class PushFactory {
                     .filter(groupMember -> !groupMember.getUserId()
                             .equalsIgnoreCase(sender.getId()))
                     .collect(Collectors.toSet());
+            if (members.size() == 0)
+                return;
 
             // 一个历史记录列表
             List<PushHistory> histories = new ArrayList<>();

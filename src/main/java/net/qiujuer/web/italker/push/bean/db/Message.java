@@ -80,7 +80,7 @@ public class Message {
     @JoinColumn(name = "receiverId")
     private User receiver;
 
-    @Column(nullable = false, updatable = false, insertable = false)
+    @Column(updatable = false, insertable = false)
     private String receiverId;
 
     // 一个群可以接受多个消息
